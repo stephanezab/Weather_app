@@ -1,13 +1,16 @@
 const apiKey = "eff517a07ef96f0d21b981bc2aec049c"
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units=metric"
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units="
 
 const searchbox = document.querySelector(".search input")
 const searchbtn = document.querySelector(".search button")
 const icon = document.querySelector(".weather-icon")
+const changeunit = document.querySelector("#change")
 
 
-async function checkWeather(city){
-    const response = await fetch(apiUrl +`&q=${city}`+ `&appid=${apiKey}`)
+let unit = "metric"
+
+async function checkWeather(city, unit){
+    const response = await fetch(apiUrl +`${unit}`+`&q=${city}`+ `&appid=${apiKey}`)
     if(response.status == 404){
         document.querySelector(".error").style.display = "block"
         document.querySelector(".weather").style.display = "none"
@@ -17,9 +20,17 @@ async function checkWeather(city){
         let data = await response.json()
         console.log(data)
         document.querySelector(".city").textContent = data.name
-        document.querySelector(".temp").textContent = Math.round(data.main.temp) + "°C"
-        document.querySelector(".humidity").textContent = data.main.humidity + "%"
-        document.querySelector(".wind").textContent = data.wind.speed + "km/h"
+        if(unit == "metric"){
+            document.querySelector(".temp").textContent = Math.round(data.main.temp) + "°C"
+            document.querySelector(".humidity").textContent = data.main.humidity + "%"
+            document.querySelector(".wind").textContent = data.wind.speed + "km/h"
+        }else{
+            document.querySelector(".temp").textContent = Math.round(data.main.temp) + "°F"
+            document.querySelector(".humidity").textContent = data.main.humidity + "%"
+            document.querySelector(".wind").textContent = data.wind.speed + "Mph"
+
+        }
+        
 
         if(data.weather[0].main == "Clouds"){
             icon.src = "images/clouds.png"
@@ -45,5 +56,14 @@ async function checkWeather(city){
 
 
 searchbtn.addEventListener("click", ()=>{
-    checkWeather(searchbox.value)
+    checkWeather(searchbox.value, unit)
+})
+
+changeunit.addEventListener("click", ()=>{
+    if(unit == "metric"){
+        unit = "imperial"
+    }else{
+        unit = "metric"
+    }
+    checkWeather(searchbox.value, unit)
 })
