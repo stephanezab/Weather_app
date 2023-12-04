@@ -1,3 +1,5 @@
+
+
 const apiKey = "eff517a07ef96f0d21b981bc2aec049c"
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units="
 
@@ -7,9 +9,35 @@ const icon = document.querySelector(".weather-icon")
 const changeunit = document.querySelector("#change")
 
 
+const urlTime = 'https://location-and-time.p.rapidapi.com/datetime/bycity?city=';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'adcfcf843dmshbece8fc38c39b51p15e9bejsnb04bb45bcd29',
+		'X-RapidAPI-Host': 'location-and-time.p.rapidapi.com'
+	}
+}
+
+async function checktime(city){
+
+    try {
+        const response = await fetch(urlTime + `${city}`, options)
+        const result = await response.json()
+        let hs = result.response.hour
+        console.log(result.response.hour)
+        return hs
+    } catch (error) {
+        console.error(error);
+    }
+    
+}
+
+
+
+
 let unit = "metric"
 
-async function checkWeather(city, unit){
+async function checkWeather(city, unit, hs){
     const response = await fetch(apiUrl +`${unit}`+`&q=${city}`+ `&appid=${apiKey}`)
     if(response.status == 404){
         document.querySelector(".error").style.display = "block"
@@ -18,7 +46,6 @@ async function checkWeather(city, unit){
     else{
         
         let data = await response.json()
-        console.log(data)
         document.querySelector(".city").textContent = data.name
         if(unit == "metric"){
             document.querySelector(".temp").textContent = Math.round(data.main.temp) + "°C"
@@ -47,6 +74,24 @@ async function checkWeather(city, unit){
         else if (data.weather[0].main == "Mist"){
             icon.src = "images/mist.png"
         }
+        
+        if(hs >= 18 || hs <= 6){
+        
+           document.querySelector(".card").style.backgroundImage = "url('images/backgroundDark.jpg')"
+        }
+        else if(hs > 6 && hs <= 9){
+
+            document.querySelector(".card").style.backgroundImage = "url('images/backgroundset&rise.jpg')"
+
+        }
+        else if(hs >= 16 && hs < 18){
+
+            document.querySelector(".card").style.backgroundImage = "url('images/backgroundset&rise.jpg')"
+
+        }
+        else{
+           document.querySelector(".card").style.backgroundImage = "url('images/backgroundcol.jpg')"
+        }
 
         document.querySelector(".weather").style.display = "block"
         document.querySelector(".error").style.display = "none"
@@ -55,15 +100,17 @@ async function checkWeather(city, unit){
 }
 
 
-searchbtn.addEventListener("click", ()=>{
-    checkWeather(searchbox.value, unit)
+searchbtn.addEventListener("click", async()=>{
+    let hours = await checktime(searchbox.value)
+    checkWeather(searchbox.value, unit, hours)
 })
 
-changeunit.addEventListener("click", ()=>{
+changeunit.addEventListener("click", async()=>{
     if(unit == "metric"){
         unit = "imperial"
     }else{
         unit = "metric"
     }
-    checkWeather(searchbox.value, unit)
+    let hours = await checktime(searchbox.value)
+    checkWeather(searchbox.value, unit, hours)
 })
