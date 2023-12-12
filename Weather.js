@@ -75,7 +75,7 @@ async function checkWeather(city, unit, hs){
             icon.src = "images/mist.png"
         }
         
-        if(hs >= 18 || hs <= 6){
+        if(hs >= 17 || hs <= 6){
         
            document.querySelector(".card").style.backgroundImage = "url('images/backgroundDark.jpg')"
         }
@@ -84,7 +84,7 @@ async function checkWeather(city, unit, hs){
             document.querySelector(".card").style.backgroundImage = "url('images/backgroundset&rise.jpg')"
 
         }
-        else if(hs >= 16 && hs < 18){
+        else if(hs >= 16 && hs < 17){
 
             document.querySelector(".card").style.backgroundImage = "url('images/backgroundset&rise.jpg')"
 
