@@ -27,7 +27,7 @@ This Weather Web Application allows users to get real-time weather data includin
 
 1. Clone the repository or download the source code.
    ```bash
-   git clone https://github.com/your-username/weather-web-app.git
+   git clone https://github.com/stephanezab/Weather_app.git
 
 ## How to Use
 
