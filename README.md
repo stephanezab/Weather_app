@@ -15,13 +15,9 @@ This Weather Web Application allows users to get real-time weather data includin
 - **CSS**: For styling the application, ensuring it's responsive and visually appealing.
 - **JavaScript**: For creating dynamic content and making API calls to OpenWeatherMap.
 - **OpenWeatherMap API**: For fetching real-time weather data.
+- **RapidAPI**: For fetching day time of the city selected so the app can tell if it's night or day.
 
 ## Getting Started
-
-### Prerequisites
-
-- A modern web browser.
-- Access to the Internet.
 
 ### Installation
 
